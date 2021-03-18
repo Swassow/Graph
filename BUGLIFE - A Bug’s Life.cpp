@@ -1,0 +1,74 @@
+#include<bits/stdc++.h>
+#define pb push_back
+#define vi vector<int>
+using namespace std;
+vi ara[2001];
+int vis[2001],col[2001];
+bool dfs(int node,int c)
+{
+    vis[node]=1;
+    col[node]=c;
+    for(int i:ara[node])
+    {
+        if(vis[i]==0)
+        {
+            bool res= dfs(i,c^1);
+            if(res==false)
+            {
+                return false;
+            }
+        }
+        else
+        {
+            if(col[i]==col[node])
+            {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+int main()
+{
+    int t,n,m,i,j,tc,a,b;
+    cin>>t;
+    for(tc=1; tc<=t; tc++)
+    {
+        cin>>n>>m;
+        for(i=1; i<=n; i++)
+        {
+            ara[i].clear();
+            vis[i]=0;
+        }
+        for(i=1; i<=m; i++)
+        {
+            cin>>a>>b;
+            ara[a].pb(b);
+            ara[b].pb(a);
+
+        }
+        bool flag =true;
+        for(i=1; i<=n; i++)
+        {
+            if(vis[i]==0)
+            {
+                bool res = dfs(i,0);
+                if(res==false)
+                {
+                    flag=false;
+                    break;
+                }
+            }
+
+        }
+        cout<<"Scenario #"<<tc<<":"<<endl;
+        if(flag)
+        {
+            cout<<("No suspicious bugs found!")<<endl;
+        }
+        else
+        {
+            cout<<("Suspicious bugs found!")<<endl;
+        }
+    }
+}
